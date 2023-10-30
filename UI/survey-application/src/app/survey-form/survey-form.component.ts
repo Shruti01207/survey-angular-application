@@ -92,15 +92,15 @@ export class SurveyFormComponent implements OnInit, OnDestroy {
       this.number = this.questions.length;
       this.currIndex = (this.currIndex + 1) % this.number;
     }
-    this.addActiveClass();
+    //this.addActiveClass();
   }
 
-  async onPrev() {
+  onPrev() {
     if (this.questions) {
       this.number = this.questions.length;
-      this.currIndex = await ((this.currIndex - 1) + this.number) % this.number;
+      this.currIndex = ((this.currIndex - 1) + this.number) % this.number;
     }
-    await this.addActiveClass();
+    //await this.addActiveClass();
   }
 
 
@@ -108,7 +108,6 @@ export class SurveyFormComponent implements OnInit, OnDestroy {
   select(e: Event, num?: number) {
     if (num && this.questions[this.currIndex].type == 'scale') {
       this.answerArray[this.currIndex] = num.toString();
-      this.addActiveClass(e.target as HTMLButtonElement);
     }
     else {
       if (e.target)
@@ -130,27 +129,7 @@ export class SurveyFormComponent implements OnInit, OnDestroy {
   }
 
 
-  async addActiveClass(btn?: HTMLButtonElement) {
-    let options = document.getElementsByClassName('option');
-
-    let len = options?.length;
-    for (let i = 0; i < len; i++) {
-      if (options[i].classList.contains('active'))
-        options[i].classList.remove('active');
-    }
-    if (this.questions[this.currIndex]?.type === 'scale' && this.answerArray[this.currIndex]?.length > 0) {
-      const activebtn = await document.getElementsByClassName('option' + '-' + this.answerArray[this.currIndex]) as HTMLCollection;
-      for (let i = 0; i < activebtn.length; i++) {
-        activebtn[i].classList.add('active');
-      }
-    }
-
-    if (btn)
-      btn.classList.add('active');
-  }
-
-  async submitResponse() {
-
+  submitResponse() {
     for (let i = 0; i < this.number; i++) {
 
       this.userResponse = {
@@ -158,7 +137,7 @@ export class SurveyFormComponent implements OnInit, OnDestroy {
         questionId: this.questions[i].id,
         answer: this.answerArray[i]
       }
-      this.responseServiceSubcription = await this.responseService.saveResponse(this.userResponse).
+      this.responseServiceSubcription = this.responseService.saveResponse(this.userResponse).
         subscribe({
           next: (response) => {
             console.log("response added sucessfully", i);

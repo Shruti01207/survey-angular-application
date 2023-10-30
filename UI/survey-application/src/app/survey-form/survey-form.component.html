@@ -12,7 +12,7 @@
             <div
                 *ngIf="questions && questions[currIndex].type =='scale' else textbox">
                 <span *ngFor="let i of questions[currIndex].options">
-                    <button (click)="select($event,i)" class="option option-{{i}}">{{i}}</button>
+                    <button (click)="select($event,i)" [class.active]="answerArray[currIndex]===i.toString( )" class="option" [id]="'option-'+i">{{i}}</button>
                 </span>
             </div>
             <ng-template #textbox>
